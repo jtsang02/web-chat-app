@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
-
+:root {
+    --primary-color: 28288b;
+  }
 
 body {
     background-color: #ffffff;
@@ -24,7 +26,7 @@ a:active {text-decoration:none}
 ul,li {list-style:none;}
 
 #app-menu {
-    background-color: #6666ff;
+    background-color: var(--primary-color);
     column-count: 2;
     column-gap: 0;
     height: 50px;
@@ -140,7 +142,7 @@ ul,li {list-style:none;}
 }
 
 .page-control {
-    background-color: #6666ff;
+    background-color: var(--primary-color);
     position: absolute;
     bottom: 0;
     line-height: 35px;
