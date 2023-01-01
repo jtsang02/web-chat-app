@@ -15,7 +15,7 @@ class ChatView {
                 <div class = "page-control">
                     <textarea name="" id="" cols="30" rows="10"></textarea>
                     <button>Send</button>
-                </div>
+                </div> 
             </div>`
         );
         this.titleElem = this.elem.querySelector('.room-name');
