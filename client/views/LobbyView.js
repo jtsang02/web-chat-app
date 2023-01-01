@@ -24,6 +24,13 @@ class LobbyView {
             this.lobby.addRoom(this.lobby.rooms.length + 1, name);
             this.inputElem.value = '';
         });
+        this.inputElem.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                let name = this.inputElem.value;
+                this.lobby.addRoom(this.lobby.rooms.length + 1, name);
+                this.inputElem.value = '';
+            }
+        });
     }
 
     redrawList() {
@@ -37,7 +44,6 @@ class LobbyView {
             this.listElem.appendChild(li);
         });
     }
-
 }
 
 export default LobbyView;

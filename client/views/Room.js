@@ -10,10 +10,15 @@ class Room {
         if (text === '' || text.trim() === '')
             return;
         
-        this.messages.push({
+        let messageObj = {
             user: username,
             message: text
-        });
+        };
+
+        this.messages.push(messageObj);
+
+        if (this.onNewMessage)
+            this.onNewMessage(messageObj);
     }    
 }
 
