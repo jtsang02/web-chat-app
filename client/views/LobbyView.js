@@ -1,4 +1,5 @@
 import { createDOM, emptyDOM } from '../views/utils.js';
+import { Service } from '../app.js';
 
 class LobbyView {
     constructor(lobby) {
@@ -21,13 +22,21 @@ class LobbyView {
         this.redrawList();
         this.buttonElem.addEventListener('click', () => {
             let name = this.inputElem.value;
-            this.lobby.addRoom(this.lobby.rooms.length + 1, name);
+            Service.addRoom({"name": name, "image": "New Room"}).then(room => {
+                this.lobby.addRoom(room.id, room.name, room.image, room.messages);
+            }).catch(err => {
+                console.log(err);
+            });
             this.inputElem.value = '';
         });
         this.inputElem.addEventListener('keyup', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 let name = this.inputElem.value;
-                this.lobby.addRoom(this.lobby.rooms.length + 1, name);
+                Service.addRoom({"name": name, "image": "New Room"}).then(room => {
+                    this.lobby.addRoom(room.id, room.name, room.image, room.messages);
+                }).catch(err => {
+                    console.log(err);
+                });
                 this.inputElem.value = '';
             }
         });

@@ -2,12 +2,7 @@ import Room from '../views/Room.js';
 
 class Lobby {
     constructor() {
-        this.rooms = [
-            new Room({id: 1, name: 'Room 1'}),
-            new Room({id: 2, name: 'Room 2'}),
-            new Room({id: 3, name: 'Room 3'}),
-            new Room({id: 4, name: 'Room 4'}),
-        ];
+        this.rooms = [];
     }
 
     getRoom(roomId) {
