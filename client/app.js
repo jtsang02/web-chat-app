@@ -5,7 +5,6 @@ import Lobby from './views/Lobby.js';
 import { emptyDOM } from './views/utils.js';
 
 var profile = { username: 'Josiah' };
-
 let Service = {
     origin: window.location.origin,
     getAllRooms: async function () {
@@ -40,8 +39,17 @@ let Service = {
 function main () {
     let lobby = new Lobby();
     let lobbyView = new LobbyView(lobby);
-    let chatView = new ChatView();
+    var socket = new WebSocket("ws://99.79.42.146:8000");
+    let chatView = new ChatView(socket);
     let profileView = new ProfileView();
+    
+    socket.addEventListener('message', (event) => {
+        let messageObj = JSON.parse(event.data);
+        console.log(messageObj);
+        var roomObj = lobby.getRoom(messageObj.roomId);
+        if (roomObj !== undefined && roomObj !== null)
+            roomObj.addMessage(messageObj.username, messageObj.message);
+    });
 
     function renderRoute () {
         // get the path from the url

@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
+const ws = require('ws');
+const broker = new ws.Server({ port: 8080 });
+
 var chatrooms = [
 	{
 		id: 0,
@@ -18,12 +21,33 @@ var chatrooms = [
 		image: 'assets/everyone-icon.png',
 	},
 ];
-var messages = {0: [], 1: [], 2: []};
+var messages = [];
 
 function logRequest(req, res, next){
 	console.log(`${new Date()}  ${req.ip} : ${req.method} ${req.path}`);
 	next();
 }
+
+// WebSocket API (broker) 
+// 1. listen for new connections
+// 2. listen for messages
+// 3. broadcast messages to all connected clients
+broker.on('connection', (socket, req) => {
+	console.log(`${new Date()}  New connection`);
+	socket.on('message',async (data) => {
+		let message = JSON.parse(data);
+		console.log(`${new Date()}  Message received: ${data}`);
+		broker.clients.forEach(client => {
+			if (client !== socket) {
+				client.send(JSON.stringify(message));
+			}
+		});
+		// store message in memory
+		if (!messages[message.roomId])
+			messages[message.roomId] = [];
+		messages[message.roomId].push(message);
+	});
+});
 
 const host = 'localhost';
 const port = 3000;
@@ -66,3 +90,4 @@ app.post('/chat', (req, res) => {
 	messages[newRoom.id] = [];
 	res.status(200).json(newRoom);
 });
+

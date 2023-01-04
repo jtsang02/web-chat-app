@@ -9,6 +9,9 @@ body {
     justify-content: center;
     font-family: "Poppins";
     margin: 0;
+    /* background-image: url("https://www.enwallpaper.com/wp-content/uploads/2021/07/lofi-wallpaper-11.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; */
 }
 
 a {text-decoration: none;}

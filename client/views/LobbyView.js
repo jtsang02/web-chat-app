@@ -22,7 +22,7 @@ class LobbyView {
         this.redrawList();
         this.buttonElem.addEventListener('click', () => {
             let name = this.inputElem.value;
-            Service.addRoom({"name": name, "image": "New Room"}).then(room => {
+            Service.addRoom({"name": name, "image": "assets/everyone-icon.png"}).then(room => {
                 this.lobby.addRoom(room.id, room.name, room.image, room.messages);
             }).catch(err => {
                 console.log(err);
@@ -32,7 +32,7 @@ class LobbyView {
         this.inputElem.addEventListener('keyup', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 let name = this.inputElem.value;
-                Service.addRoom({"name": name, "image": "New Room"}).then(room => {
+                Service.addRoom({"name": name, "image": "assets/everyone-icon.png"}).then(room => {
                     this.lobby.addRoom(room.id, room.name, room.image, room.messages);
                 }).catch(err => {
                     console.log(err);
