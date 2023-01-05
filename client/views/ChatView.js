@@ -1,5 +1,6 @@
 import { createDOM } from '../views/utils.js';
 import { profile } from '../app.js';
+import Room from '../views/Room.js';
 
 class ChatView {
     constructor(socket) {
@@ -67,16 +68,23 @@ class ChatView {
     }
 
     sendMessage() {
-        let message = this.inputElem.value;
-        this.room.addMessage(profile.username, message);
-        this.inputElem.value = '';
+        let text = this.inputElem.value;
+        console.log(text);
+        if (text === '')
+            return;
+        // add the message to the chat view
+        // console.log(profile.username);
+        // console.log(this.room);
+        this.room.addMessage(profile.username, text);
         // send the message to the server
-        this.socket.send(JSON.stringify({
+        this.socket.send(JSON.stringify(({
             roomId: this.room.id,
             username: profile.username,
-            text: message
-        }));
-    }
+            text: text
+            }))
+        );
+        this.inputElem.value = '';
+    };       
 }
 
 export default ChatView;

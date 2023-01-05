@@ -6,7 +6,7 @@ class Room {
         this.messages = messages;
     }
 
-    addMessage(username, text) {
+    addMessage(username, text) {        
         if (text === '' || text.trim() === '')
             return;
         

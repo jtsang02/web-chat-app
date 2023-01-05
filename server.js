@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const ws = require('ws');
-const broker = new ws.Server({ port: 8080 });
+const broker = new ws.Server({ port: 8000 });
 
 var chatrooms = [
 	{
@@ -21,7 +21,7 @@ var chatrooms = [
 		image: 'assets/everyone-icon.png',
 	},
 ];
-var messages = [];
+var messages = {};
 
 function logRequest(req, res, next){
 	console.log(`${new Date()}  ${req.ip} : ${req.method} ${req.path}`);
@@ -34,18 +34,19 @@ function logRequest(req, res, next){
 // 3. broadcast messages to all connected clients
 broker.on('connection', (socket, req) => {
 	console.log(`${new Date()}  New connection`);
-	socket.on('message',async (data) => {
-		let message = JSON.parse(data);
+	socket.on('message', (data) => {
+		let messageObj = JSON.parse(data);
 		console.log(`${new Date()}  Message received: ${data}`);
 		broker.clients.forEach(client => {
 			if (client !== socket) {
-				client.send(JSON.stringify(message));
+				client.send(JSON.stringify(messageObj));
 			}
 		});
 		// store message in memory
-		if (!messages[message.roomId])
-			messages[message.roomId] = [];
-		messages[message.roomId].push(message);
+		if (!messages[messageObj.roomId]) {
+			messages[messageObj.roomId] = [];
+		}
+		messages[messageObj.roomId].push(messageObj);
 	});
 });
 

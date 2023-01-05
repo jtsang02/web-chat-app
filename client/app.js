@@ -4,6 +4,7 @@ import ProfileView from './views/ProfileView.js';
 import Lobby from './views/Lobby.js';
 import { emptyDOM } from './views/utils.js';
 
+// var socket = new WebSocket("ws://99.79.42.146:3000");
 var profile = { username: 'Josiah' };
 let Service = {
     origin: window.location.origin,
@@ -39,16 +40,29 @@ let Service = {
 function main () {
     let lobby = new Lobby();
     let lobbyView = new LobbyView(lobby);
-    var socket = new WebSocket("ws://99.79.42.146:8000");
+    let socket = new WebSocket("ws://192.168.1.72:8000");
     let chatView = new ChatView(socket);
     let profileView = new ProfileView();
     
+    // add event listeners
+    socket.addEventListener('open', (event) => {
+        console.log('Connected to server');
+    });
+
+    socket.addEventListener('close', (event) => {
+        console.log('Disconnected from server');
+    });
+
+    socket.addEventListener('error', (event) => {
+        console.log('Error: ' + event);
+    });
+
     socket.addEventListener('message', (event) => {
+        console.log('Message from server ', event.data);
         let messageObj = JSON.parse(event.data);
         console.log(messageObj);
         var roomObj = lobby.getRoom(messageObj.roomId);
-        if (roomObj !== undefined && roomObj !== null)
-            roomObj.addMessage(messageObj.username, messageObj.message);
+        roomObj.addMessage(messageObj.username, messageObj.text);
     });
 
     function renderRoute () {
@@ -102,7 +116,7 @@ function main () {
     window.addEventListener('popstate', renderRoute);
     renderRoute();
     refreshLobby();
-    setInterval(refreshLobby, 2000);
+    setInterval(refreshLobby, 5000);
 }
 
 // need this to make sure the DOM is loaded before we try to access it
