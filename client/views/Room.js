@@ -14,7 +14,8 @@ class Room {
             user: username,
             message: text
         };
-
+        
+        // console.log('messageObj: ', messageObj);
         this.messages.push(messageObj);
 
         if (this.onNewMessage)
